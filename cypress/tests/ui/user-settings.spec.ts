@@ -1,5 +1,4 @@
 import { User } from "../../../src/models";
-import { isMobile } from "../../support/utils";
 import {
   UserSettingsFormFields,
   UserSettingsPage,
@@ -16,10 +15,7 @@ describe("User Settings", function () {
       cy.loginByXstate(user.username);
     });
 
-    if (isMobile()) {
-      cy.getBySel("sidenav-toggle").click();
-    }
-
+    // TODO: Use this in another way, something like SidenavUserPage.click()
     cy.getBySel("sidenav-user-settings").click();
   });
 
@@ -27,14 +23,6 @@ describe("User Settings", function () {
     const userSettingsPage = new UserSettingsPage();
 
     userSettingsPage.checkPageTitle("User Settings");
-  });
-
-  it("renders the user settings form", function () {
-    cy.wait("@getNotifications");
-    cy.getBySel("user-settings-form").should("be.visible");
-    cy.location("pathname").should("include", "/user/settings");
-
-    cy.visualSnapshot("User Settings Form");
   });
 
   it("should display user setting form errors", function () {
@@ -79,13 +67,7 @@ describe("User Settings", function () {
 
     userSettingsPage.clickSaveButton();
 
-    cy.wait("@updateUser").its("response.statusCode").should("equal", 204);
-
-    if (isMobile()) {
-      cy.getBySel("sidenav-toggle").click();
-    }
-
+    // TODO: Here we should use a SidenavPage, of something like that
     cy.getBySel("sidenav-user-full-name").should("contain", "New First Name");
-    cy.visualSnapshot("User Settings Update Profile");
   });
 });

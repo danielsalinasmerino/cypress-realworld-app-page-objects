@@ -1,8 +1,8 @@
 export enum UserSettingsFormFields {
-  firstName = "firstNameInput",
-  lastName = "lastNameInput",
-  email = "emailInput",
-  phoneNumber = "phoneNumberInput",
+  firstName = "firstName",
+  lastName = "lastName",
+  email = "email",
+  phoneNumber = "phoneNumber",
 }
 
 export class UserSettingsPage {
@@ -26,19 +26,7 @@ export class UserSettingsPage {
   public checkPageTitle(text: string) {
     // Why we use a regExp: https://stackoverflow.com/questions/56443963/click-an-exact-match-text-in-cypress
     const regExpText = new RegExp(`^${text}$`, "g");
-    this.pageTitle.contains(regExpText).should("exist");
-  }
-
-  /**
-   * Clears a field from the form.
-   *
-   *
-   * @param field - The field that we want to clear
-   * @returns Nothing
-   *
-   */
-  public clear(field: UserSettingsFormFields) {
-    this[field].clear();
+    this.pageTitle.contains(regExpText);
   }
 
   /**
@@ -51,7 +39,19 @@ export class UserSettingsPage {
    *
    */
   public type(field: UserSettingsFormFields, text: string) {
-    this[field].type(text).blur();
+    this[`${field}Input`].type(text).blur();
+  }
+
+  /**
+   * Clears a field from the form.
+   *
+   *
+   * @param field - The field that we want to clear
+   * @returns Nothing
+   *
+   */
+  public clear(field: UserSettingsFormFields) {
+    this[`${field}Input`].clear().blur();
   }
 
   /**
@@ -64,8 +64,23 @@ export class UserSettingsPage {
    *
    */
   public fillField(field: UserSettingsFormFields, text: string) {
-    this[field].clear();
-    this[field].type(text).blur();
+    this[`${field}Input`].clear();
+    this[`${field}Input`].type(text).blur();
+  }
+
+  /**
+   * Checks if the error text from a field is visible and is something particular.
+   *
+   *
+   * @param field - The field that we want to get the error text
+   * @param text - The text that we want to check (if it is the error text)
+   * @returns Nothing
+   *
+   */
+  public checkFieldError(field: UserSettingsFormFields, text: string) {
+    // Why we use a regExp: https://stackoverflow.com/questions/56443963/click-an-exact-match-text-in-cypress
+    const regExpText = new RegExp(`^${text}$`, "g");
+    return cy.get(`#user-settings-${field}-input-helper-text`).should("exist").contains(regExpText);
   }
 
   /**

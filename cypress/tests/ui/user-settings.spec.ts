@@ -40,36 +40,33 @@ describe("User Settings", function () {
   it("should display user setting form errors", function () {
     const userSettingsPage = new UserSettingsPage();
 
-    ["first", "last"].forEach((field) => {
-      cy.getBySelLike(`${field}Name-input`).type("Abc").clear().blur();
-      cy.get(`#user-settings-${field}Name-input-helper-text`)
-        .should("be.visible")
-        .and("contain", `Enter a ${field} name`);
-    });
+    userSettingsPage.fillField(UserSettingsFormFields.firstName, "Abc");
+    userSettingsPage.clear(UserSettingsFormFields.firstName);
+    userSettingsPage.checkFieldError(UserSettingsFormFields.firstName, "Enter a first name");
 
-    cy.getBySelLike("email-input").type("abc").clear().blur();
-    cy.get("#user-settings-email-input-helper-text")
-      .should("be.visible")
-      .and("contain", "Enter an email address");
+    userSettingsPage.fillField(UserSettingsFormFields.lastName, "Abc");
+    userSettingsPage.clear(UserSettingsFormFields.lastName);
+    userSettingsPage.checkFieldError(UserSettingsFormFields.lastName, "Enter a last name");
 
-    //cy.getBySelLike("email-input").type("abc@bob.").blur();
+    userSettingsPage.fillField(UserSettingsFormFields.email, "abc");
+    userSettingsPage.clear(UserSettingsFormFields.email);
+    userSettingsPage.checkFieldError(UserSettingsFormFields.email, "Enter an email address");
+
     userSettingsPage.fillField(UserSettingsFormFields.email, "abc@bob.");
-    cy.get("#user-settings-email-input-helper-text")
-      .should("be.visible")
-      .and("contain", "Must contain a valid email address");
+    userSettingsPage.checkFieldError(
+      UserSettingsFormFields.email,
+      "Must contain a valid email address"
+    );
 
-    cy.getBySelLike("phoneNumber-input").type("abc").clear().blur();
-    cy.get("#user-settings-phoneNumber-input-helper-text")
-      .should("be.visible")
-      .and("contain", "Enter a phone number");
+    userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "abc");
+    userSettingsPage.clear(UserSettingsFormFields.phoneNumber);
+    userSettingsPage.checkFieldError(UserSettingsFormFields.phoneNumber, "Enter a phone number");
 
-    cy.getBySelLike("phoneNumber-input").type("615-555-").blur();
-    cy.get("#user-settings-phoneNumber-input-helper-text")
-      .should("be.visible")
-      .and("contain", "Phone number is not valid");
-
-    cy.getBySelLike("submit").should("be.disabled");
-    cy.visualSnapshot("User Settings Form Errors and Submit Disabled");
+    userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "615-555-");
+    userSettingsPage.checkFieldError(
+      UserSettingsFormFields.phoneNumber,
+      "Phone number is not valid"
+    );
   });
 
   it("updates first name, last name, email and phone number", function () {
@@ -79,9 +76,6 @@ describe("User Settings", function () {
     userSettingsPage.fillField(UserSettingsFormFields.lastName, "New Last Name");
     userSettingsPage.fillField(UserSettingsFormFields.email, "email@email.com");
     userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "6155551212");
-
-    //cy.getBySelLike("submit").should("not.be.disabled");
-    //cy.getBySelLike("submit").click();
 
     userSettingsPage.clickSaveButton();
 

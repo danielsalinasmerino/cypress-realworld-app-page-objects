@@ -1,8 +1,5 @@
 import { User } from "../../../src/models";
-import {
-  UserSettingsFormFields,
-  UserSettingsPage,
-} from "../../../src/page-objects/UserSettingsPageObject";
+import { UserSettingsPage } from "../../../src/page-objects/UserSettingsPageObject";
 
 describe("User Settings", function () {
   beforeEach(function () {
@@ -19,53 +16,63 @@ describe("User Settings", function () {
     cy.getBySel("sidenav-user-settings").click();
   });
 
-  it("renders the correct title", function () {
+  it("renders the correct page title", function () {
     const userSettingsPage = new UserSettingsPage();
 
-    userSettingsPage.checkPageTitle("User Settings");
+    userSettingsPage.assertPageTitle("User Settings");
   });
 
   it("should display user setting form errors", function () {
     const userSettingsPage = new UserSettingsPage();
 
-    userSettingsPage.fillField(UserSettingsFormFields.firstName, "Abc");
-    userSettingsPage.clear(UserSettingsFormFields.firstName);
-    userSettingsPage.checkFieldError(UserSettingsFormFields.firstName, "Enter a first name");
+    // First name
+    userSettingsPage
+      .clearFirstName()
+      .typeFirstName("Abc")
+      .clearFirstName()
+      .assertFirstNameError("Enter a first name");
 
-    userSettingsPage.fillField(UserSettingsFormFields.lastName, "Abc");
-    userSettingsPage.clear(UserSettingsFormFields.lastName);
-    userSettingsPage.checkFieldError(UserSettingsFormFields.lastName, "Enter a last name");
+    // Last name
+    userSettingsPage
+      .clearLastName()
+      .typeLastName("Abc")
+      .clearLastName()
+      .assertLastNameError("Enter a last name");
 
-    userSettingsPage.fillField(UserSettingsFormFields.email, "abc");
-    userSettingsPage.clear(UserSettingsFormFields.email);
-    userSettingsPage.checkFieldError(UserSettingsFormFields.email, "Enter an email address");
+    // Email
+    userSettingsPage
+      .clearEmail()
+      .typeEmail("Abc")
+      .clearEmail()
+      .assertEmailError("Enter an email address")
+      .clearEmail()
+      .typeEmail("abc@bob.")
+      .assertEmailError("Must contain a valid email address");
 
-    userSettingsPage.fillField(UserSettingsFormFields.email, "abc@bob.");
-    userSettingsPage.checkFieldError(
-      UserSettingsFormFields.email,
-      "Must contain a valid email address"
-    );
-
-    userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "abc");
-    userSettingsPage.clear(UserSettingsFormFields.phoneNumber);
-    userSettingsPage.checkFieldError(UserSettingsFormFields.phoneNumber, "Enter a phone number");
-
-    userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "615-555-");
-    userSettingsPage.checkFieldError(
-      UserSettingsFormFields.phoneNumber,
-      "Phone number is not valid"
-    );
+    // Phone number
+    userSettingsPage
+      .clearPhoneNumber()
+      .typePhoneNumber("Abc")
+      .clearPhoneNumber()
+      .assertPhoneNumberError("Enter a phone number")
+      .clearPhoneNumber()
+      .typePhoneNumber("615-555-")
+      .assertPhoneNumberError("Phone number is not valid");
   });
 
   it("updates first name, last name, email and phone number", function () {
     const userSettingsPage = new UserSettingsPage();
 
-    userSettingsPage.fillField(UserSettingsFormFields.firstName, "New First Name");
-    userSettingsPage.fillField(UserSettingsFormFields.lastName, "New Last Name");
-    userSettingsPage.fillField(UserSettingsFormFields.email, "email@email.com");
-    userSettingsPage.fillField(UserSettingsFormFields.phoneNumber, "6155551212");
-
-    userSettingsPage.clickSaveButton();
+    userSettingsPage
+      .clearFirstName()
+      .typeFirstName("New First Name")
+      .clearLastName()
+      .typeLastName("New Last Name")
+      .clearEmail()
+      .typeEmail("email@email.com")
+      .clearPhoneNumber()
+      .typePhoneNumber("6155551212")
+      .clickSaveButton();
 
     // TODO: Here we should use a SidenavPage, of something like that
     cy.getBySel("sidenav-user-full-name").should("contain", "New First Name");

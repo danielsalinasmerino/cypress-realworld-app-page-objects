@@ -1,3 +1,5 @@
+// This is a class that represents the UserSettings page
+
 export class UserSettingsPage {
   private pageTitle = cy.get("#user-settings-title");
 

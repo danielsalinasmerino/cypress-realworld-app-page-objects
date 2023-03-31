@@ -8,10 +8,9 @@ import {
   TypegenDisabled,
 } from "xstate";
 import { makeStyles, Container, Grid, useMediaQuery, useTheme } from "@material-ui/core";
-
+import NavDrawer from "./NavDrawer/NavDrawer";
 import Footer from "./Footer";
 import NavBar from "./NavBar";
-import NavDrawer from "./NavDrawer";
 import { DataContext, DataEvents, DataSchema } from "../machines/dataMachine";
 import { AuthMachineContext, AuthMachineEvents, AuthMachineSchema } from "../machines/authMachine";
 import { drawerMachine } from "../machines/drawerMachine";

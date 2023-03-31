@@ -9,8 +9,8 @@ import {
 } from "xstate";
 import MainLayout from "../components/MainLayout";
 import PrivateRoute from "../components/PrivateRoute";
+import UserSettingsContainer from "./UserSettings/UserSettingsContainer";
 import TransactionsContainer from "./TransactionsContainer";
-import UserSettingsContainer from "./UserSettingsContainer";
 import NotificationsContainer from "./NotificationsContainer";
 import BankAccountsContainer from "./BankAccountsContainer";
 import TransactionCreateContainer from "./TransactionCreateContainer";

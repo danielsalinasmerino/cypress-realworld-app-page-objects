@@ -1,10 +1,10 @@
 import React from "react";
 import { makeStyles, Paper, Typography, Grid } from "@material-ui/core";
-import UserSettingsForm from "../components/UserSettingsForm";
+import UserSettingsForm from "../../components/UserSettingsForm";
 import { Interpreter } from "xstate";
-import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
+import { AuthMachineContext, AuthMachineEvents } from "../../machines/authMachine";
 import { useActor } from "@xstate/react";
-import PersonalSettingsIllustration from "../components/SvgUndrawPersonalSettingsKihd";
+import PersonalSettingsIllustration from "../../components/SvgUndrawPersonalSettingsKihd";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

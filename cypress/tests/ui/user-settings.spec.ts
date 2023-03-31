@@ -1,19 +1,24 @@
 import { User } from "../../../src/models";
-import { UserSettingsPage } from "../../../src/page-objects/UserSettingsPageObject";
+import { UserSettingsPage } from "../../../src/containers/UserSettings/UserSettingsPageObject";
+import { NavDrawerPageComponent } from "../../../src/components/NavDrawer/NavDrawerPageComponent";
 
 describe("User Settings", function () {
   beforeEach(function () {
+    //
+    // I don't think we will need this block on the future, I think it is just part of the
+    // playground limitations
+    //
     cy.task("db:seed");
-
     cy.intercept("PATCH", "/users/*").as("updateUser");
     cy.intercept("GET", "/notifications*").as("getNotifications");
-
     cy.database("find", "users").then((user: User) => {
       cy.loginByXstate(user.username);
     });
+    //
 
-    // TODO: Use this in another way, something like SidenavUserPage.click()
-    cy.getBySel("sidenav-user-settings").click();
+    const navDrawerPageObject = new NavDrawerPageComponent();
+
+    navDrawerPageObject.clickMyAccountButton();
   });
 
   it("renders the correct page title", function () {
@@ -62,6 +67,7 @@ describe("User Settings", function () {
 
   it("updates first name, last name, email and phone number", function () {
     const userSettingsPage = new UserSettingsPage();
+    const navDrawerPageObject = new NavDrawerPageComponent();
 
     userSettingsPage
       .clearFirstName()
@@ -74,7 +80,6 @@ describe("User Settings", function () {
       .typePhoneNumber("6155551212")
       .clickSaveButton();
 
-    // TODO: Here we should use a SidenavPage, of something like that
-    cy.getBySel("sidenav-user-full-name").should("contain", "New First Name");
+    navDrawerPageObject.fullNameContains("New First Name");
   });
 });

@@ -26,8 +26,8 @@ import {
   AccountBalance as AccountBalanceIcon,
 } from "@material-ui/icons";
 
-import { formatAmount } from "../utils/transactionUtils";
-import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
+import { formatAmount } from "../../utils/transactionUtils";
+import { AuthMachineContext, AuthMachineEvents } from "../../machines/authMachine";
 
 const drawerWidth = 240;
 
@@ -43,6 +43,7 @@ export const mainListItems = (
       component={RouterLink}
       to="/"
       data-test="sidenav-home"
+      id={"sidenav-home"}
     >
       <ListItemIcon>
         <HomeIcon />
@@ -56,6 +57,7 @@ export const mainListItems = (
       component={RouterLink}
       to="/user/settings"
       data-test="sidenav-user-settings"
+      id={"sidenav-user-settings"}
     >
       <ListItemIcon>
         <PersonIcon />
@@ -69,6 +71,7 @@ export const mainListItems = (
       component={RouterLink}
       to="/bankaccounts"
       data-test="sidenav-bankaccounts"
+      id={"sidenav-bankaccounts"}
     >
       <ListItemIcon>
         <AccountBalanceIcon />
@@ -82,6 +85,7 @@ export const mainListItems = (
       component={RouterLink}
       to="/notifications"
       data-test="sidenav-notifications"
+      id={"sidenav-notifications"}
     >
       <ListItemIcon>
         <NotificationsIcon />
@@ -214,6 +218,7 @@ const NavDrawer: React.FC<Props> = ({
                 variant="subtitle1"
                 color="textPrimary"
                 data-test="sidenav-user-full-name"
+                id={"sidenav-user-full-name"}
               >
                 {currentUser.firstName} {head(currentUser.lastName)}
               </Typography>
@@ -263,7 +268,7 @@ const NavDrawer: React.FC<Props> = ({
         <Grid item>
           <Divider />
         </Grid>
-        <Grid item>
+        <Grid item id={"sidenav-logout"}>
           <List>{secondaryListItems(signOut)}</List>
         </Grid>
       </Grid>
